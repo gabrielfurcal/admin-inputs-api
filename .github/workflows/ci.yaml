@@ -12,5 +12,7 @@ jobs:
           java-version: '21'
           distribution: 'oracle'
           architecture: x64
+      - name: Placing the right path 
+        run: cd ../
       - name: Run Test and package application
         run: mvn clean install
