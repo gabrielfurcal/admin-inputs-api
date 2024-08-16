@@ -5,14 +5,12 @@ on: push
 jobs:
   build_maven:
     runs-on: ubuntu-latest
-    build:
-      name: Build & Test
-      steps:
-        - name: Setup Java
-          uses: actions/setup-java@v4
-          with:
-            java-version: '21'
-            distribution: 'oracle'
-            architecture: x64
-        - name: Run Test and package application
-          run: mvn clean install
+    steps:
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'oracle'
+          architecture: x64
+      - name: Run Test and package application
+        run: mvn clean install
