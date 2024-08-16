@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - '***'
+  workflow-dispatch:
+    inputs:
+      manual_release:
+        type: boolean
+        description: 'trigger maven release'
+        required: true
+
+jobs:
+  build:
+    name: Build & Test
+    runs-on: classic-dind
+    steps:
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'oracle'
+          architecture: x64
+      - name: Run Test and package application
+        run: mvn clean install
