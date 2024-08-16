@@ -1,0 +1,8 @@
+type Query {
+    status: [Status!]!
+}
+type Status {
+    id: ID!
+    name: String!
+    description: String!
+}
