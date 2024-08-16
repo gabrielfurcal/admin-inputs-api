@@ -4,13 +4,6 @@ on:
   push:
     branches:
       - '***'
-  workflow-dispatch:
-    inputs:
-      manual_release:
-        type: boolean
-        description: 'trigger maven release'
-        required: true
-
 jobs:
   build:
     name: Build & Test
