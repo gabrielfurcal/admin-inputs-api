@@ -13,6 +13,6 @@ jobs:
           distribution: 'oracle'
           architecture: x64
       - name: Placing the right path 
-        run: cd ../
+        run: cd /home/runner/work/admin-inputs/admin-inputs
       - name: Run Test and package application
         run: mvn clean install
