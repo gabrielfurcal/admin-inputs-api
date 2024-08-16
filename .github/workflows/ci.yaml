@@ -3,16 +3,16 @@ name: CI
 on: push
 
 jobs:
-  Run-maven-on-Ubuntu:
-    name: Run maven on Ubunto
+  build_maven:
     runs-on: ubuntu-latest
     build:
       name: Build & Test
-      runs-on: classic-dind
       steps:
-        - uses: actions/setup-java@v4
+        - name: Setup Java
+          uses: actions/setup-java@v4
           with:
             java-version: '21'
             distribution: 'oracle'
             architecture: x64
-        - run: mvn clean install
+        - name: Run Test and package application
+          run: mvn clean install
