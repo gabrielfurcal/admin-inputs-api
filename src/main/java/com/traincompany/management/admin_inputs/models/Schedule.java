@@ -32,7 +32,7 @@ public class Schedule {
     private int trainId;
 
     @Column(name = "Route_ID", insertable = false, updatable = false)
-    private int routeId;
+    private Integer routeId;
 
     @Column(name = "Status_ID", insertable = false, updatable = false)
     private int statusId;

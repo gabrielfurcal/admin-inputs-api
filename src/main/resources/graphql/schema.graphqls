@@ -1,8 +1,19 @@
 type Query {
+    schedules: [Schedule!]!
+    scheduleById(id: Int): Schedule
     status: [Status!]!
+    statusById(id: Int): Status
 }
 type Status {
     id: ID!
     name: String!
     description: String!
+}
+
+type Schedule {
+    id: ID!
+    trainId: Int
+    departureTime: String
+    arrivalTime: String
+    status: Status
 }

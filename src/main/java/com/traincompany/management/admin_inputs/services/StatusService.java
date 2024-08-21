@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import com.traincompany.management.admin_inputs.DTOs.StatusDTO;
+import com.traincompany.management.admin_inputs.models.Status;
 import com.traincompany.management.admin_inputs.repositories.StatusRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +25,18 @@ public class StatusService {
         } catch (Exception ex) {
             log.error("Error at getting status: {}", ex.getMessage());
             throw new Exception("Error at getting status");
+        }
+    }
+
+    public StatusDTO findById(int id) throws Exception {
+        try {
+            Status dbStatus = statusRepository.findById(id).orElseThrow(() -> new Exception("Status not found"));
+            var status = new StatusDTO(dbStatus.getId(), dbStatus.getName(), dbStatus.getDescription());
+            
+            return status;
+        } catch (Exception ex) {
+            log.error("Error at getting status: {}", ex.getMessage());
+            throw new Exception(ex.getMessage());
         }
     }
 }
