@@ -3,11 +3,22 @@ type Query {
     scheduleById(id: Int): Schedule
     status: [Status!]!
     statusById(id: Int): Status
+    trains: [Train!]!
+    trainById(id: Int): Train
+    cities: [City!]!
+    cityById(id: Int): City
+    employees: [Employee!]!
+    employeeById(id: Int): Employee
+    stations: [Station!]!
+    stationById(id: Int): Station
+    routes: [Route!]!
+    routeById(id: Int): Route
 }
 type Status {
     id: ID!
     name: String!
     description: String!
+    schedules: [Schedule!]!
 }
 
 type Schedule {
@@ -16,4 +27,46 @@ type Schedule {
     departureTime: String
     arrivalTime: String
     status: Status
+}
+
+type Train {
+    id: ID!
+    type: String!
+    capacity: Int!
+    maxSpeed: Float!
+}
+
+type City {
+    id: ID!
+    city: String!
+    province: String!
+    country: String!
+}
+
+type Employee {
+    id: ID!
+    firstName: String!,
+    lastName: String!,
+    position: String!,
+    phoneNumber: String!,
+    email: String!
+}
+
+type Station {
+    id: ID!
+    name: String!
+    countryCode: String!
+    phone: String!
+    postalCode: String!
+    latitude: Float
+    longitude: Float
+    cityId: Int!
+    imageUrl: String
+}
+
+type Route {
+    id: ID!
+    startStation: Station
+    endStation: Station
+    distance: Float!
 }

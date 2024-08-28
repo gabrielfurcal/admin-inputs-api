@@ -28,4 +28,7 @@ public class Train {
 
     @Column(name = "Capacity")
     private int capacity;
+
+    @Column(name = "Max_Speed")
+    private float maxSpeed;
 }
