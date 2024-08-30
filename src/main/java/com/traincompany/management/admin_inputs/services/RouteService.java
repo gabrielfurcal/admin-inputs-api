@@ -28,7 +28,7 @@ public class RouteService {
         }
     }
 
-    public RouteDTO findById(int id) throws Exception {
+    public RouteDTO findById(Integer id) throws Exception {
         try {
             Route dbRoute = routeRepository.findById(id).orElseThrow(() -> new Exception("Route not found"));
             var route = mapper.map(dbRoute);

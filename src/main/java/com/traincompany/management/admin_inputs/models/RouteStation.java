@@ -25,16 +25,16 @@ public class RouteStation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Route_Station_ID")
-    private int id;
+    private Integer id;
 
     @Column(name = "Route_ID", insertable = false, updatable = false)
-    private int routeId;
+    private Integer routeId;
 
     @Column(name = "Station_ID", insertable = false, updatable = false)
-    private int stationId;
+    private Integer stationId;
 
     @Column(name = "Station_Order")
-    private int order;
+    private Integer order;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name="Route_ID")

@@ -28,7 +28,7 @@ public class ScheduleService {
         }
     }
 
-    public List<ScheduleDTO> findAll(int statusId) throws Exception {
+    public List<ScheduleDTO> findAll(Integer statusId) throws Exception {
         try {
             var dbSchedules = scheduleRepository.findAllByStatusId(statusId);
             var scheduleList = dbSchedules.stream().map(schedule -> mapper.map(schedule)).toList();
@@ -40,7 +40,7 @@ public class ScheduleService {
         }
     }
 
-    public ScheduleDTO findById(int id) throws Exception {
+    public ScheduleDTO findById(Integer id) throws Exception {
         try {
             Schedule dbSchedule = scheduleRepository.findById(id).orElseThrow(() -> new Exception("Schedule not found"));
             var schedule = mapper.map(dbSchedule);

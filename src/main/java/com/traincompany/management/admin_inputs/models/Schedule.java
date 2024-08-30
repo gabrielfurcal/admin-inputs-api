@@ -26,16 +26,16 @@ public class Schedule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Schedule_ID")
-    private int id;
+    private Integer id;
 
     @Column(name = "Train_ID", insertable = false, updatable = false)
-    private int trainId;
+    private Integer trainId;
 
     @Column(name = "Route_ID", insertable = false, updatable = false)
     private Integer routeId;
 
     @Column(name = "Status_ID", insertable = false, updatable = false)
-    private int statusId;
+    private Integer statusId;
 
     @Column(name = "Departure_Time")
     private Date departureTime;

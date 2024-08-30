@@ -28,7 +28,7 @@ public class TrainService {
         }
     }
 
-    public TrainDTO findById(int id) throws Exception {
+    public TrainDTO findById(Integer id) throws Exception {
         try {
             Train dbTrain = trainRepository.findById(id).orElseThrow(() -> new Exception("Train not found"));
             var train = mapper.map(dbTrain);

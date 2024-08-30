@@ -41,7 +41,7 @@ public class ScheduleController {
     }
 
     @QueryMapping
-    public ScheduleDTO scheduleById(@Argument int id) throws Exception {
+    public ScheduleDTO scheduleById(@Argument Integer id) throws Exception {
         return scheduleService.findById(id);
     }
 

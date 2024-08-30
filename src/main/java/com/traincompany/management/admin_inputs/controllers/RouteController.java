@@ -41,7 +41,7 @@ public class RouteController {
     }
 
     @QueryMapping
-    public RouteDTO routeById(@Argument int id) throws Exception {
+    public RouteDTO routeById(@Argument Integer id) throws Exception {
         return routeService.findById(id);
     }
 

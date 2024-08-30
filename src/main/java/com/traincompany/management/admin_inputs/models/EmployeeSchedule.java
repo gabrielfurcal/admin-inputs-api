@@ -25,13 +25,13 @@ public class EmployeeSchedule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Emp_Schdl_ID")
-    private int id;
+    private Integer id;
 
     @Column(name = "Employee_ID", insertable = false, updatable = false)
-    private int employeeId;
+    private Integer employeeId;
 
     @Column(name = "Schedule_ID", insertable = false, updatable = false)
-    private int scheduleId;
+    private Integer scheduleId;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name="Employee_ID")

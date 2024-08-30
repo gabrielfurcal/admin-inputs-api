@@ -41,7 +41,7 @@ public class StatusController {
     }
 
     @QueryMapping
-    public StatusDTO statusById(@Argument int id) throws Exception {
+    public StatusDTO statusById(@Argument Integer id) throws Exception {
         return statusService.findById(id);
     }
 

@@ -28,7 +28,7 @@ public class StatusService {
         }
     }
 
-    public StatusDTO findById(int id) throws Exception {
+    public StatusDTO findById(Integer id) throws Exception {
         try {
             Status dbStatus = statusRepository.findById(id).orElseThrow(() -> new Exception("Status not found"));
             var status = mapper.map(dbStatus);

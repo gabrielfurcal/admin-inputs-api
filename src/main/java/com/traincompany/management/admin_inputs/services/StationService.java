@@ -28,7 +28,7 @@ public class StationService {
         }
     }
 
-    public StationDTO findById(int id) throws Exception {
+    public StationDTO findById(Integer id) throws Exception {
         try {
             Station dbStation = stationRepository.findById(id).orElseThrow(() -> new Exception("Station not found"));
             var station = mapper.map(dbStation);

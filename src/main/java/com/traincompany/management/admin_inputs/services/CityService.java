@@ -28,7 +28,7 @@ public class CityService {
         }
     }
 
-    public CityDTO findById(int id) throws Exception {
+    public CityDTO findById(Integer id) throws Exception {
         try {
             City dbCity = cityRepository.findById(id).orElseThrow(() -> new Exception("City not found"));
             var city = mapper.map(dbCity);
@@ -36,6 +36,42 @@ public class CityService {
             return city;
         } catch (Exception ex) {
             log.error("Error at getting city: {}", ex.getMessage());
+            throw new Exception(ex.getMessage());
+        }
+    }
+
+    public CityDTO save(CityDTO city) throws Exception {
+        try {
+            if(city.id() == null) {
+                City cityToSave = mapper.map(city);
+                cityToSave = cityRepository.save(cityToSave);
+
+                return mapper.map(cityToSave);
+            } else {
+                City cityToUpdate = cityRepository.findById(city.id()).get();
+                cityToUpdate.setCity(city.city());
+                cityToUpdate.setProvince(city.province());
+                cityToUpdate.setCountry(city.country());
+
+                cityToUpdate = cityRepository.save(cityToUpdate);
+
+                return mapper.map(cityToUpdate);
+            }
+        } catch(Exception ex) {
+            log.error("Error at saving city: {}", ex.getMessage());
+            throw new Exception(ex.getMessage());
+        }
+    }
+
+    public Boolean deleteById(Integer id) throws Exception {
+        try {
+            City cityToDelete = cityRepository.findById(id).get();
+
+            cityRepository.delete(cityToDelete);
+            
+            return true;
+        } catch(Exception ex) {
+            log.error("Error at deleting city with ID: " + id.toString(), ex);
             throw new Exception(ex.getMessage());
         }
     }

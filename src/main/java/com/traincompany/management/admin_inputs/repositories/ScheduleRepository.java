@@ -6,5 +6,5 @@ import java.util.List;
 
 
 public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
-    public List<Schedule> findAllByStatusId(int statusId);
+    public List<Schedule> findAllByStatusId(Integer statusId);
 }

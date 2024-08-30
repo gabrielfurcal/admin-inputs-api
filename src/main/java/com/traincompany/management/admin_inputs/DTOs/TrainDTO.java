@@ -1,3 +1,3 @@
 package com.traincompany.management.admin_inputs.DTOs;
 
-public record TrainDTO(int id, String type, int capacity, float maxSpeed) { }
+public record TrainDTO(Integer id, String type, Integer capacity, Float maxSpeed) { }

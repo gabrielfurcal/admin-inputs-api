@@ -28,7 +28,7 @@ public class EmployeeService {
         }
     }
 
-    public EmployeeDTO findById(int id) throws Exception {
+    public EmployeeDTO findById(Integer id) throws Exception {
         try {
             Employee dbEmployee = employeeRepository.findById(id).orElseThrow(() -> new Exception("Employee not found"));
             var employee = mapper.map(dbEmployee);

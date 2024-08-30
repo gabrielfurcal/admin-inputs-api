@@ -1,3 +1,3 @@
 package com.traincompany.management.admin_inputs.DTOs;
 
-public record StatusDTO(int id, String name, String description) { }
+public record StatusDTO(Integer id, String name, String description) { }

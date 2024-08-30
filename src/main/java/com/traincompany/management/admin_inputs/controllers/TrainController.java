@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
-// import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -38,12 +37,7 @@ public class TrainController {
     }
 
     @QueryMapping
-    public TrainDTO trainById(@Argument int id) throws Exception {
+    public TrainDTO trainById(@Argument Integer id) throws Exception {
         return trainService.findById(id);
     }
-
-    // @SchemaMapping(field = "schedules", typeName = "Status")
-    // public List<ScheduleDTO> schedules(StatusDTO status) throws Exception {
-    //     return scheduleService.findAll(status.id());
-    // }
 }

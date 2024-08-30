@@ -25,7 +25,7 @@ public class Station {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Station_ID")
-    private int id;
+    private Integer id;
 
     @Column(name = "Station_Name", length = 100)
     private String name;
@@ -40,13 +40,13 @@ public class Station {
     private String postalCode;
 
     @Column(name = "Station_Lat")
-    private float latitude;
+    private Float latitude;
 
     @Column(name = "Station_Long")
-    private float longitude;
+    private Float longitude;
 
     @Column(name = "City_ID", insertable = false, updatable = false)
-    private int cityId;
+    private Integer cityId;
 
     @Column(name = "Station_Img_Url", length = 200)
     private String imageUrl;

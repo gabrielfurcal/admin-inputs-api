@@ -21,14 +21,14 @@ public class Train {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Train_ID")
-    private int id;
+    private Integer id;
 
     @Column(name = "Train_Type", length = 60)
     private String type;
 
     @Column(name = "Capacity")
-    private int capacity;
+    private Integer capacity;
 
     @Column(name = "Max_Speed")
-    private float maxSpeed;
+    private Float maxSpeed;
 }

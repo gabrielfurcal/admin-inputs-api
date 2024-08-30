@@ -7,8 +7,8 @@ import com.traincompany.management.admin_inputs.services.CityService;
 import lombok.RequiredArgsConstructor;
 import java.util.List;
 import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
-// import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -38,12 +38,17 @@ public class CityController {
     }
 
     @QueryMapping
-    public CityDTO cityById(@Argument int id) throws Exception {
+    public CityDTO cityById(@Argument Integer id) throws Exception {
         return cityService.findById(id);
     }
 
-    // @SchemaMapping(field = "schedules", typeName = "Status")
-    // public List<ScheduleDTO> schedules(StatusDTO status) throws Exception {
-    //     return scheduleService.findAll(status.id());
-    // }
+    @MutationMapping
+    public CityDTO saveCity(@Argument CityDTO city) throws Exception {
+        return cityService.save(city);
+    }
+
+    @MutationMapping
+    public Boolean deleteCity(@Argument Integer id) throws Exception {
+        return cityService.deleteById(id);
+    }
 }
