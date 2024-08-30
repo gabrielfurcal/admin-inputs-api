@@ -72,7 +72,7 @@ type Route {
     distance: Float!
 }
 
-# Mutations
+###################################### MUTATIONS ######################################
 
 type Mutation {
     saveCity(city: CityInput): City
