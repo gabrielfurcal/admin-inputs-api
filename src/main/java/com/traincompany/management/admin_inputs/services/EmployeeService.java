@@ -39,4 +39,42 @@ public class EmployeeService {
             throw new Exception(ex.getMessage());
         }
     }
+
+    public EmployeeDTO save(EmployeeDTO employee) throws Exception {
+        try {
+            if(employee.id() == null) {
+                Employee employeeToSave = mapper.map(employee);
+                employeeToSave = employeeRepository.save(employeeToSave);
+
+                return mapper.map(employeeToSave);
+            } else {
+                Employee employeeToUpdate = employeeRepository.findById(employee.id()).get();
+                employeeToUpdate.setFirstName(employee.firstName());
+                employeeToUpdate.setLastName(employee.lastName());
+                employeeToUpdate.setEmail(employee.email());
+                employeeToUpdate.setPhoneNumber(employee.phoneNumber());
+                employeeToUpdate.setPosition(employee.position());
+
+                employeeToUpdate = employeeRepository.save(employeeToUpdate);
+
+                return mapper.map(employeeToUpdate);
+            }
+        } catch (Exception ex) {
+            log.error("Error at saving employee: {}", ex.getMessage());
+            throw new Exception(ex.getMessage());
+        }
+    }
+
+    public Boolean deleteById(Integer id) throws Exception {
+        try {
+            Employee employeeToDelete = employeeRepository.findById(id).get();
+
+            employeeRepository.delete(employeeToDelete);
+
+            return true;
+        } catch(Exception ex) {
+            log.error("Error at deleting employee with ID: " + id.toString(), ex);
+            throw new Exception(ex.getMessage());
+        }
+    }
 }

@@ -39,4 +39,40 @@ public class TrainService {
             throw new Exception(ex.getMessage());
         }
     }
+
+    public TrainDTO save(TrainDTO train) throws Exception {
+        try {
+            if(train.id() == null) {
+                Train trainToSave = mapper.map(train);
+                trainToSave = trainRepository.save(trainToSave);
+
+                return mapper.map(trainToSave);
+            } else {
+                Train trainToUpdate = trainRepository.findById(train.id()).get();
+                trainToUpdate.setType(train.type());
+                trainToUpdate.setCapacity(train.capacity());
+                trainToUpdate.setMaxSpeed(train.maxSpeed());
+
+                trainToUpdate = trainRepository.save(trainToUpdate);
+
+                return mapper.map(trainToUpdate);
+            }
+        } catch(Exception ex) {
+            log.error("Error at saving train: {}", ex.getMessage());
+            throw new Exception(ex.getMessage());
+        }
+    }
+
+    public Boolean deleteById(Integer id) throws Exception {
+        try {
+            Train trainToDelete = trainRepository.findById(id).get();
+
+            trainRepository.delete(trainToDelete);
+            
+            return true;
+        } catch(Exception ex) {
+            log.error("Error at deleting train with ID: " + id.toString(), ex);
+            throw new Exception(ex.getMessage());
+        }
+    }
 }

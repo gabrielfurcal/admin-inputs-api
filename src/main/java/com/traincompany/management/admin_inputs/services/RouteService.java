@@ -38,5 +38,41 @@ public class RouteService {
             log.error("Error at getting route: {}", ex.getMessage());
             throw new Exception(ex.getMessage());
         }
+    }
+    
+    public RouteDTO save(RouteDTO route) throws Exception {
+        try {
+            if(route.id() == null) {
+                Route routeToSave = mapper.map(route);
+                routeToSave = routeRepository.save(routeToSave);
+
+                return mapper.map(routeToSave);
+            } else {
+                Route routeToUpdate = routeRepository.findById(route.id()).get();
+                routeToUpdate.setStartStationId(route.startStationId());
+                routeToUpdate.setEndStationId(route.endStationId());
+                routeToUpdate.setDistance(route.distance());
+
+                routeToUpdate = routeRepository.save(routeToUpdate);
+
+                return mapper.map(routeToUpdate);
+            }
+        } catch(Exception ex) {
+            log.error("Error at saving route: {}", ex.getMessage());
+            throw new Exception(ex.getMessage());
+        }
+    }
+
+    public Boolean deleteById(Integer id) throws Exception {
+        try {
+            Route routeToDelete = routeRepository.findById(id).get();
+
+            routeRepository.delete(routeToDelete);
+            
+            return true;
+        } catch(Exception ex) {
+            log.error("Error at deleting route with ID: " + id.toString(), ex);
+            throw new Exception(ex.getMessage());
+        }
     }    
 }

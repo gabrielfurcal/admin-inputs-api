@@ -39,4 +39,39 @@ public class StatusService {
             throw new Exception(ex.getMessage());
         }
     }
+
+    public StatusDTO save(StatusDTO status) throws Exception {
+        try {
+            if(status.id() == null) {
+                Status statusToSave = mapper.map(status);
+                statusToSave = statusRepository.save(statusToSave);
+
+                return mapper.map(statusToSave);
+            } else {
+                Status statusToUpdate = statusRepository.findById(status.id()).get();
+                statusToUpdate.setName(status.name());
+                statusToUpdate.setDescription(status.description());
+
+                statusToUpdate = statusRepository.save(statusToUpdate);
+
+                return mapper.map(statusToUpdate);
+            }
+        } catch(Exception ex) {
+            log.error("Error at saving status: {}", ex.getMessage());
+            throw new Exception(ex.getMessage());
+        }
+    }
+
+    public Boolean deleteById(Integer id) throws Exception {
+        try {
+            Status statusToDelete = statusRepository.findById(id).get();
+
+            statusRepository.delete(statusToDelete);
+            
+            return true;
+        } catch(Exception ex) {
+            log.error("Error at deleting status with ID: " + id.toString(), ex);
+            throw new Exception(ex.getMessage());
+        }
+    }
 }

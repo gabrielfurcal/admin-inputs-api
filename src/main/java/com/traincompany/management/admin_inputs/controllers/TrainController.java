@@ -7,6 +7,7 @@ import com.traincompany.management.admin_inputs.services.TrainService;
 import lombok.RequiredArgsConstructor;
 import java.util.List;
 import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,5 +40,15 @@ public class TrainController {
     @QueryMapping
     public TrainDTO trainById(@Argument Integer id) throws Exception {
         return trainService.findById(id);
+    }
+
+    @MutationMapping
+    public TrainDTO saveTrain(@Argument TrainDTO train) throws Exception {
+        return trainService.save(train);
+    }
+
+    @MutationMapping
+    public Boolean deleteTrain(@Argument Integer id) throws Exception {
+        return trainService.deleteById(id);
     }
 }
