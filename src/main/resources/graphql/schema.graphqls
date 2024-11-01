@@ -18,24 +18,15 @@ type Query {
 type Status {
     id: ID!
     name: String!
-    description: String!
-    schedules: [Schedule!]!
-}
-
-type Schedule {
-    id: ID!
-    trainId: Int
-    routeId: Int
-    departureTime: String
-    arrivalTime: String
-    status: Status
+    description: String
+    schedules: [Schedule!]
 }
 
 type Train {
     id: ID!
     type: String!
-    capacity: Int!
-    maxSpeed: Float!
+    capacity: Int
+    maxSpeed: Float
 }
 
 type City {
@@ -70,7 +61,16 @@ type Route {
     id: ID!
     startStation: Station
     endStation: Station
-    distance: Float!
+    distance: Float
+}
+
+type Schedule {
+    id: ID!
+    train: Train
+    route: Route
+    departureTime: String
+    arrivalTime: String
+    status: Status
 }
 
 ###################################### MUTATIONS ######################################
