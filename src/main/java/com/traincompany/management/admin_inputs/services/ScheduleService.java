@@ -6,7 +6,11 @@ import com.traincompany.management.admin_inputs.DTOs.ScheduleDTO;
 import com.traincompany.management.admin_inputs.models.Schedule;
 import com.traincompany.management.admin_inputs.utils.DateFormatter;
 import com.traincompany.management.admin_inputs.utils.Mapper;
+import com.traincompany.management.admin_inputs.repositories.RouteRepository;
 import com.traincompany.management.admin_inputs.repositories.ScheduleRepository;
+import com.traincompany.management.admin_inputs.repositories.TrainRepository;
+import com.traincompany.management.admin_inputs.repositories.StatusRepository;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -15,6 +19,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ScheduleService {
     private final ScheduleRepository scheduleRepository;
+    private final TrainRepository trainRepository;
+    private final RouteRepository routeRepository;
+    private final StatusRepository statusRepository;
     private final Mapper mapper;
 
     public List<ScheduleDTO> findAll() throws Exception {
@@ -57,6 +64,10 @@ public class ScheduleService {
         try {
             if(schedule.id() == null) {
                 Schedule scheduleToSave = mapper.map(schedule);
+                scheduleToSave.setTrain(trainRepository.findById(schedule.trainId()).get());
+                scheduleToSave.setRoute(routeRepository.findById(schedule.routeId()).get());
+                scheduleToSave.setStatus(statusRepository.findById(schedule.statusId()).get());
+
                 scheduleToSave = scheduleRepository.save(scheduleToSave);
 
                 return mapper.map(scheduleToSave);
@@ -67,6 +78,9 @@ public class ScheduleService {
                 scheduleToUpdate.setRouteId(schedule.routeId());
                 scheduleToUpdate.setStatusId(schedule.statusId());
                 scheduleToUpdate.setTrainId(schedule.trainId());
+                scheduleToUpdate.setTrain(trainRepository.findById(schedule.trainId()).get());
+                scheduleToUpdate.setRoute(routeRepository.findById(schedule.routeId()).get());
+                scheduleToUpdate.setStatus(statusRepository.findById(schedule.statusId()).get());
 
                 scheduleToUpdate = scheduleRepository.save(scheduleToUpdate);
 
@@ -81,7 +95,10 @@ public class ScheduleService {
     public Boolean deleteById(Integer id) throws Exception {
         try {
             Schedule scheduleToDelete = scheduleRepository.findById(id).get();
-
+            scheduleToDelete.setTrain(null);
+            scheduleToDelete.setRoute(null);
+            scheduleToDelete.setStatus(null);
+            
             scheduleRepository.delete(scheduleToDelete);
             
             return true;
