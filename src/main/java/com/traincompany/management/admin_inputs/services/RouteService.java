@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import com.traincompany.management.admin_inputs.DTOs.RouteDTO;
 import com.traincompany.management.admin_inputs.models.Route;
 import com.traincompany.management.admin_inputs.repositories.RouteRepository;
+import com.traincompany.management.admin_inputs.repositories.StationRepository;
 import com.traincompany.management.admin_inputs.utils.Mapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class RouteService {
     private final RouteRepository routeRepository;
+    private final StationRepository stationRepository;
     private final Mapper mapper;
 
     public List<RouteDTO> findAll() throws Exception {
@@ -44,6 +46,8 @@ public class RouteService {
         try {
             if(route.id() == null) {
                 Route routeToSave = mapper.map(route);
+                routeToSave.setStartStation(stationRepository.findById(route.startStationId()).get());
+                routeToSave.setEndStation(stationRepository.findById(route.endStationId()).get());
                 routeToSave = routeRepository.save(routeToSave);
 
                 return mapper.map(routeToSave);
@@ -51,6 +55,8 @@ public class RouteService {
                 Route routeToUpdate = routeRepository.findById(route.id()).get();
                 routeToUpdate.setStartStationId(route.startStationId());
                 routeToUpdate.setEndStationId(route.endStationId());
+                routeToUpdate.setStartStation(stationRepository.findById(route.startStationId()).get());
+                routeToUpdate.setEndStation(stationRepository.findById(route.endStationId()).get());
                 routeToUpdate.setDistance(route.distance());
 
                 routeToUpdate = routeRepository.save(routeToUpdate);
@@ -66,7 +72,8 @@ public class RouteService {
     public Boolean deleteById(Integer id) throws Exception {
         try {
             Route routeToDelete = routeRepository.findById(id).get();
-
+            routeToDelete.setStartStation(null);
+            routeToDelete.setEndStation(null);
             routeRepository.delete(routeToDelete);
             
             return true;
