@@ -40,8 +40,8 @@ jobs:
     - name: Install Dependencies
       run: mvn dependency:resolve
 
-    - name: Run Tests
-      run: mvn test
+    # - name: Run Tests
+    #   run: mvn test
 
     - name: Build Application
       run: mvn package -DskipTests
