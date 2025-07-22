@@ -2,19 +2,6 @@ name: CI
 
 on: push
 
-# jobs:
-#   build_maven:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Setup Java
-#         uses: actions/setup-java@v4
-#         with:
-#           java-version: '21'
-#           distribution: 'oracle'
-#           architecture: x64
-#       - name: Run Test and package application
-#         run: mvn clean install
-
 jobs:
   build:
     runs-on: ubuntu-latest
