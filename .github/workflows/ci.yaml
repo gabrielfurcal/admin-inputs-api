@@ -34,7 +34,7 @@ jobs:
           ls
           echo "Moving to target directory"
           cd target
-          "Target contents:"
+          echo "Target contents:"
           ls
 
       - name: Log in to Docker Hub
