@@ -32,7 +32,9 @@ jobs:
       - name: Read directories
         run: |
           ls
+          echo "Moving to target directory"
           cd target
+          "Target contents:"
           ls
 
       - name: Log in to Docker Hub

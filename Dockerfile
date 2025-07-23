@@ -9,7 +9,7 @@ ENV APP_NAME=${APP_NAME}
 WORKDIR /app
 
 # Copy jar from build stage
-COPY /app/target/*.jar ${APP_NAME}.jar
+COPY /app/*.jar ${APP_NAME}.jar
 
 # Expose default Spring Boot port
 EXPOSE 8080
