@@ -29,16 +29,6 @@ jobs:
       - name: Build with Maven
         run: mvn clean package -DskipTests
 
-      - name: Read directories
-        run: |
-          ls
-          echo "Moving to target directory"
-          cd target
-          echo "Target contents:"
-          ls
-          echo "Current directory"
-          pwd
-
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
