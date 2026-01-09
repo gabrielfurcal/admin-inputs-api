@@ -1,5 +1,6 @@
 type Query {
     schedules: [Schedule!]!
+    schedulesFiltered(startStationId: Int, endStationId: Int, startDate: String, endDate: String, passengers: Int): [Schedule!]
     scheduleById(id: Int): Schedule
     status: [Status!]!
     statusById(id: Int): Status

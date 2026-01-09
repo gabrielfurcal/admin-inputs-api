@@ -54,6 +54,15 @@ public class ScheduleController {
         return scheduleService.findById(id);
     }
 
+    @QueryMapping
+    public List<ScheduleDTO> schedulesFiltered(@Argument Integer startStationId, 
+                                         @Argument Integer endStationId, 
+                                         @Argument String startDate, 
+                                         @Argument String endDate, 
+                                         @Argument Integer passengers) throws Exception {
+        return scheduleService.findFiltered(startStationId, endStationId, startDate, endDate, passengers);
+    }
+
     @SchemaMapping(typeName = "Schedule")
     public StatusDTO status(ScheduleDTO schedule) throws Exception {
         return statusService.findById(schedule.statusId());
