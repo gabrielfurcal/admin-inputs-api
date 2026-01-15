@@ -3,7 +3,9 @@ package com.traincompany.management.admin_inputs_api.controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.traincompany.management.admin_inputs_api.DTOs.CityDTO;
 import com.traincompany.management.admin_inputs_api.DTOs.StationDTO;
+import com.traincompany.management.admin_inputs_api.services.CityService;
 import com.traincompany.management.admin_inputs_api.services.StationService;
 
 import lombok.RequiredArgsConstructor;
@@ -11,6 +13,7 @@ import java.util.List;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -18,6 +21,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequestMapping("/stations/")
 @RequiredArgsConstructor
 public class StationController {
+
+    private final CityService cityService;
     private final StationService stationService;
 
     @GetMapping()
@@ -42,6 +47,11 @@ public class StationController {
     @QueryMapping
     public StationDTO stationById(@Argument Integer id) throws Exception {
         return stationService.findById(id);
+    }
+
+    @SchemaMapping(typeName = "Station")
+    public CityDTO city(StationDTO station) throws Exception {
+        return cityService.findById(station.cityId());
     }
 
     @MutationMapping

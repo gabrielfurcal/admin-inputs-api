@@ -49,6 +49,18 @@ public class ScheduleService {
         }
     }
 
+    public List<ScheduleDTO> findFiltered(Integer startStationId, Integer endStationId, String startDate, String endDate, Integer passengers) throws Exception {
+        try {
+            var dbSchedules = scheduleRepository.findFiltered(startStationId, endStationId, DateFormatter.toDate(startDate, "yyyy-MM-dd hh:mm:ss"), DateFormatter.toDate(endDate, "yyyy-MM-dd hh:mm:ss"));
+            var scheduleList = dbSchedules.stream().map(schedule -> mapper.map(schedule)).toList();
+
+            return scheduleList;
+        } catch (Exception ex) {
+            log.error("Error at getting filtered schedules: {}", ex.getMessage());
+            throw new Exception("Error at getting filtered schedules");
+        }
+    }
+
     public ScheduleDTO findById(Integer id) throws Exception {
         try {
             Schedule dbSchedule = scheduleRepository.findById(id).orElseThrow(() -> new Exception("Schedule not found"));
