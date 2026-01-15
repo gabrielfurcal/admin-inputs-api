@@ -49,9 +49,9 @@ type Employee {
 type Station {
     id: ID!
     name: String!
-    countryCode: String!
-    phone: String!
-    postalCode: String!
+    countryCode: String
+    phone: String
+    postalCode: String
     latitude: Float
     longitude: Float
     city: City
@@ -59,7 +59,7 @@ type Station {
 }
 
 type Route {
-    id: ID!
+    id: ID
     startStation: Station
     endStation: Station
     distance: Float
