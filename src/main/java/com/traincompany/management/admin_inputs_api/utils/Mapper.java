@@ -1,7 +1,6 @@
 package com.traincompany.management.admin_inputs_api.utils;
 
 import org.springframework.stereotype.Component;
-
 import com.traincompany.management.admin_inputs_api.DTOs.CityDTO;
 import com.traincompany.management.admin_inputs_api.DTOs.EmployeeDTO;
 import com.traincompany.management.admin_inputs_api.DTOs.RouteDTO;
@@ -9,6 +8,7 @@ import com.traincompany.management.admin_inputs_api.DTOs.ScheduleDTO;
 import com.traincompany.management.admin_inputs_api.DTOs.StationDTO;
 import com.traincompany.management.admin_inputs_api.DTOs.StatusDTO;
 import com.traincompany.management.admin_inputs_api.DTOs.TrainDTO;
+import com.traincompany.management.admin_inputs_api.DTOs.TripDTO;
 import com.traincompany.management.admin_inputs_api.models.City;
 import com.traincompany.management.admin_inputs_api.models.Employee;
 import com.traincompany.management.admin_inputs_api.models.Route;
@@ -16,6 +16,7 @@ import com.traincompany.management.admin_inputs_api.models.Schedule;
 import com.traincompany.management.admin_inputs_api.models.Station;
 import com.traincompany.management.admin_inputs_api.models.Status;
 import com.traincompany.management.admin_inputs_api.models.Train;
+import com.traincompany.management.admin_inputs_api.models.Trip;
 
 @Component
 public class Mapper {
@@ -24,27 +25,52 @@ public class Mapper {
     */
     public ScheduleDTO map(Schedule schedule) {
         return new ScheduleDTO(
-                    schedule.getId(), 
-                    schedule.getTrainId(), 
+                    schedule.getId(),
                     schedule.getRouteId(),
-                    schedule.getStatusId(),
-                    DateFormatter.toString(schedule.getDepartureTime(), "yyyy-MM-dd hh:mm:ss"),
-                    DateFormatter.toString(schedule.getArrivalTime(), "yyyy-MM-dd hh:mm:ss"),
-                    null);
+                    schedule.getDepartureWeekdayId(),
+                    DateAndTimeFormatter.toString(schedule.getDepartureTime(), "HH:mm:ss"),
+                    schedule.getArrivalWeekdayId(),
+                    DateAndTimeFormatter.toString(schedule.getArrivalTime(), "HH:mm:ss"));
     }
 
     public Schedule map(ScheduleDTO schedule) throws Exception {
         return new Schedule(
                     schedule.id(), 
-                    schedule.trainId(), 
+                    schedule.departureWeekdayId(),
+                    DateAndTimeFormatter.toTime(schedule.departureTime(), "HH:mm:ss"),
+                    schedule.arrivalWeekdayId(),
+                    DateAndTimeFormatter.toTime(schedule.arrivalTime(), "HH:mm:ss"),
                     schedule.routeId(),
-                    schedule.statusId(),
-                    DateFormatter.toDate(schedule.departureTime(), "yyyy-MM-dd hh:mm:ss"),
-                    DateFormatter.toDate(schedule.arrivalTime(), "yyyy-MM-dd hh:mm:ss"),
+                    null);
+    }
+    
+    /*
+    * Trip Mappers
+    */
+    public TripDTO map(Trip trip) {
+        return new TripDTO(
+                    trip.getId(),
+                    trip.getScheduleId(),
+                    trip.getStatusId(),
+                    trip.getTrainId(),
+                    DateAndTimeFormatter.toString(trip.getStartTime(), "yyyy-MM-dd HH:mm:ss"),
+                    DateAndTimeFormatter.toString(trip.getEndTime(), "yyyy-MM-dd HH:mm:ss"),
+                    null);
+    }
+
+    public Trip map(TripDTO trip) throws Exception {
+        return new Trip(
+                    trip.id(), 
+                    trip.scheduleId(),
+                    trip.trainId(),
+                    trip.statusId(),
+                    DateAndTimeFormatter.toDate(trip.startTime(), "yyyy-MM-dd HH:mm:ss"),
+                    DateAndTimeFormatter.toDate(trip.endTime(), "yyyy-MM-dd HH:mm:ss"),
                     null,
                     null,
                     null);
     }
+
     /*
     * Employee Mappers
     */
@@ -83,6 +109,7 @@ public class Mapper {
             station.getPostalCode(),
             station.getLatitude(),
             station.getLongitude(),
+            station.getTimezoneId(),
             station.getCityId(),
             station.getImageUrl(),
             null
@@ -98,8 +125,10 @@ public class Mapper {
             station.postalCode(),
             station.latitude(),
             station.longitude(),
+            station.timezoneId(),
             station.cityId(),
             station.imageUrl(),
+            null,
             null
         );
     }

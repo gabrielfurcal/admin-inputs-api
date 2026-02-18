@@ -1,6 +1,6 @@
 package com.traincompany.management.admin_inputs_api.models;
 
-import java.util.Date;
+import java.time.LocalTime;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -28,30 +28,22 @@ public class Schedule {
     @Column(name = "Schedule_ID")
     private Integer id;
 
-    @Column(name = "Train_ID", insertable = false, updatable = false)
-    private Integer trainId;
+    @Column(name = "Departure_Weekday_ID", insertable = false, updatable = false)
+    private Integer departureWeekdayId;
+
+    @Column(name = "Departure_Time")
+    private LocalTime departureTime;
+
+    @Column(name = "Arrival_Weekday_ID", insertable = false, updatable = false)
+    private Integer arrivalWeekdayId;
+
+    @Column(name = "Arrival_Time")
+    private LocalTime arrivalTime;
 
     @Column(name = "Route_ID", insertable = false, updatable = false)
     private Integer routeId;
 
-    @Column(name = "Status_ID", insertable = false, updatable = false)
-    private Integer statusId;
-
-    @Column(name = "Departure_Time")
-    private Date departureTime;
-
-    @Column(name = "Arrival_Time")
-    private Date arrivalTime;
-
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name="Train_ID")
-    private Train train;
-
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name="Route_ID")
     private Route route;
-
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name="Status_ID")
-    private Status status;
 }

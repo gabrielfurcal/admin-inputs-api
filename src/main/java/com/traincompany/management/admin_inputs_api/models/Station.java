@@ -45,11 +45,18 @@ public class Station {
     @Column(name = "Station_Long")
     private Float longitude;
 
+    @Column(name = "Timezone_ID", insertable = false, updatable = false)
+    private Integer timezoneId;
+    
     @Column(name = "City_ID", insertable = false, updatable = false)
     private Integer cityId;
 
     @Column(name = "Station_Img_Url", length = 200)
     private String imageUrl;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name="Timezone_ID")
+    private Timezone timezone;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name="City_ID")
