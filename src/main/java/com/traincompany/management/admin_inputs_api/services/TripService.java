@@ -4,9 +4,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.traincompany.management.admin_inputs_api.DTOs.TripDTO;
-import com.traincompany.management.admin_inputs_api.models.Schedule;
-import com.traincompany.management.admin_inputs_api.repositories.RouteRepository;
-import com.traincompany.management.admin_inputs_api.repositories.ScheduleRepository;
+import com.traincompany.management.admin_inputs_api.models.Trip;
 import com.traincompany.management.admin_inputs_api.repositories.StatusRepository;
 import com.traincompany.management.admin_inputs_api.repositories.TrainRepository;
 import com.traincompany.management.admin_inputs_api.repositories.TripRepository;
@@ -21,9 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TripService {
     private final TripRepository tripRepository;
-    private final ScheduleRepository scheduleRepository;
     private final TrainRepository trainRepository;
-    private final RouteRepository routeRepository;
     private final StatusRepository statusRepository;
     private final Mapper mapper;
 
@@ -39,86 +35,83 @@ public class TripService {
         }
     }
 
-    public List<ScheduleDTO> findAll(Integer statusId) throws Exception {
+    public List<TripDTO> findAll(Integer statusId) throws Exception {
         try {
-            var dbSchedules = scheduleRepository.findAllByStatusId(statusId);
-            var scheduleList = dbSchedules.stream().map(schedule -> mapper.map(schedule)).toList();
+            var dbTrips = tripRepository.findAllByStatusId(statusId);
+            var tripList = dbTrips.stream().map(trip -> mapper.map(trip)).toList();
 
-            return scheduleList;
+            return tripList;
         } catch (Exception ex) {
-            log.error("Error at getting schedules: {}", ex.getMessage());
-            throw new Exception("Error at getting schedules");
+            log.error("Error at getting trips: {}", ex.getMessage());
+            throw new Exception("Error at getting trips");
         }
     }
 
-    public List<ScheduleDTO> findFiltered(Integer startStationId, Integer endStationId, String startDate, String endDate, Integer passengers) throws Exception {
+    public List<TripDTO> findFiltered(Integer startStationId, Integer endStationId, String startDate, String endDate, Integer passengers) throws Exception {
         try {
-            var dbSchedules = scheduleRepository.findFiltered(startStationId, endStationId, DateFormatter.toDate(startDate, "yyyy-MM-dd hh:mm:ss"), DateFormatter.toDate(endDate, "yyyy-MM-dd hh:mm:ss"));
-            var scheduleList = dbSchedules.stream().map(schedule -> mapper.map(schedule)).toList();
+            var dbTrips = tripRepository.findFiltered(startStationId, endStationId, DateAndTimeFormatter.toDate(startDate, "yyyy-MM-dd hh:mm:ss"), DateAndTimeFormatter.toDate(endDate, "yyyy-MM-dd hh:mm:ss"));
+            var tripList = dbTrips.stream().map(trip -> mapper.map(trip)).toList();
 
-            return scheduleList;
+            return tripList;
         } catch (Exception ex) {
-            log.error("Error at getting filtered schedules: {}", ex.getMessage());
-            throw new Exception("Error at getting filtered schedules");
+            log.error("Error at getting filtered trips: {}", ex.getMessage());
+            throw new Exception("Error at getting filtered trips");
         }
     }
 
-    public ScheduleDTO findById(Integer id) throws Exception {
+    public TripDTO findById(Integer id) throws Exception {
         try {
-            Schedule dbSchedule = scheduleRepository.findById(id).orElseThrow(() -> new Exception("Schedule not found"));
-            var schedule = mapper.map(dbSchedule);
+            Trip dbTrip = tripRepository.findById(id).orElseThrow(() -> new Exception("Trip not found"));
+            var trip = mapper.map(dbTrip);
             
-            return schedule;
+            return trip;
         } catch (Exception ex) {
-            log.error("Error at getting schedule: {}", ex.getMessage());
+            log.error("Error at getting trip: {}", ex.getMessage());
             throw new Exception(ex.getMessage());
         }
     }
 
-    public ScheduleDTO save(ScheduleDTO schedule) throws Exception {
+    public TripDTO save(TripDTO trip) throws Exception {
+
         try {
-            if(schedule.id() == null) {
-                Schedule scheduleToSave = mapper.map(schedule);
-                scheduleToSave.setTrain(trainRepository.findById(schedule.trainId()).get());
-                scheduleToSave.setRoute(routeRepository.findById(schedule.routeId()).get());
-                scheduleToSave.setStatus(statusRepository.findById(schedule.statusId()).get());
+            if(trip.id() == null) {
+                Trip tripToSave = mapper.map(trip);
+                tripToSave.setTrain(trainRepository.findById(trip.trainId()).get());
+                tripToSave.setStatus(statusRepository.findById(trip.statusId()).get());
 
-                scheduleToSave = scheduleRepository.save(scheduleToSave);
+                tripToSave = tripRepository.save(tripToSave);
 
-                return mapper.map(scheduleToSave);
+                return mapper.map(tripToSave);
             } else {
-                Schedule scheduleToUpdate = scheduleRepository.findById(schedule.id()).get();
-                scheduleToUpdate.setDepartureTime(DateFormatter.toDate(schedule.departureTime(), "yyyy-MM-dd hh:mm:ss"));
-                scheduleToUpdate.setArrivalTime((DateFormatter.toDate(schedule.arrivalTime(), "yyyy-MM-dd hh:mm:ss")));
-                scheduleToUpdate.setRouteId(schedule.routeId());
-                scheduleToUpdate.setStatusId(schedule.statusId());
-                scheduleToUpdate.setTrainId(schedule.trainId());
-                scheduleToUpdate.setTrain(trainRepository.findById(schedule.trainId()).get());
-                scheduleToUpdate.setRoute(routeRepository.findById(schedule.routeId()).get());
-                scheduleToUpdate.setStatus(statusRepository.findById(schedule.statusId()).get());
+                Trip tripToUpdate = tripRepository.findById(trip.id()).get();
+                tripToUpdate.setStartTime(DateAndTimeFormatter.toDate(trip.startTime(), "yyyy-MM-dd hh:mm:ss"));
+                tripToUpdate.setEndTime((DateAndTimeFormatter.toDate(trip.endTime(), "yyyy-MM-dd hh:mm:ss")));
+                tripToUpdate.setStatusId(trip.statusId());
+                tripToUpdate.setTrainId(trip.trainId());
+                tripToUpdate.setTrain(trainRepository.findById(trip.trainId()).get());
+                tripToUpdate.setStatus(statusRepository.findById(trip.statusId()).get());
 
-                scheduleToUpdate = scheduleRepository.save(scheduleToUpdate);
+                tripToUpdate = tripRepository.save(tripToUpdate);
 
-                return mapper.map(scheduleToUpdate);
+                return mapper.map(tripToUpdate);
             }
         } catch(Exception ex) {
-            log.error("Error at saving schedule: {}", ex.getMessage());
+            log.error("Error at saving trip: {}", ex.getMessage());
             throw new Exception(ex.getMessage());
         }
     }
 
     public Boolean deleteById(Integer id) throws Exception {
         try {
-            Schedule scheduleToDelete = scheduleRepository.findById(id).get();
-            scheduleToDelete.setTrain(null);
-            scheduleToDelete.setRoute(null);
-            scheduleToDelete.setStatus(null);
+            Trip tripToDelete = tripRepository.findById(id).get();
+            tripToDelete.setTrain(null);
+            tripToDelete.setStatus(null);
             
-            scheduleRepository.delete(scheduleToDelete);
+            tripRepository.delete(tripToDelete);
             
             return true;
         } catch(Exception ex) {
-            log.error("Error at deleting schedule with ID: " + id.toString(), ex);
+            log.error("Error at deleting trip with ID: " + id.toString(), ex);
             throw new Exception(ex.getMessage());
         }
     }

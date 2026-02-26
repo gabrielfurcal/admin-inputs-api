@@ -10,13 +10,11 @@ import java.util.List;
 
 
 public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
-    public List<Schedule> findAllByStatusId(Integer statusId);
-
     @Query("""
             SELECT s
             FROM Schedule s
-            WHERE (s.departureStationId = :departureStationId)
-            AND (s.arrivalStationId = :arrivalStationId)
+            WHERE (s.route.startStationId = :departureStationId)
+            AND (s.route.endStationId = :arrivalStationId)
             AND (s.departureTime = :departureTime)
             AND (s.arrivalTime = :arrivalTime)
             """)

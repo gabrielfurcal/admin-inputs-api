@@ -7,16 +7,20 @@ import com.traincompany.management.admin_inputs_api.DTOs.RouteDTO;
 import com.traincompany.management.admin_inputs_api.DTOs.ScheduleDTO;
 import com.traincompany.management.admin_inputs_api.DTOs.StationDTO;
 import com.traincompany.management.admin_inputs_api.DTOs.StatusDTO;
+import com.traincompany.management.admin_inputs_api.DTOs.TimezoneDTO;
 import com.traincompany.management.admin_inputs_api.DTOs.TrainDTO;
 import com.traincompany.management.admin_inputs_api.DTOs.TripDTO;
+import com.traincompany.management.admin_inputs_api.DTOs.WeekdayDTO;
 import com.traincompany.management.admin_inputs_api.models.City;
 import com.traincompany.management.admin_inputs_api.models.Employee;
 import com.traincompany.management.admin_inputs_api.models.Route;
 import com.traincompany.management.admin_inputs_api.models.Schedule;
 import com.traincompany.management.admin_inputs_api.models.Station;
 import com.traincompany.management.admin_inputs_api.models.Status;
+import com.traincompany.management.admin_inputs_api.models.Timezone;
 import com.traincompany.management.admin_inputs_api.models.Train;
 import com.traincompany.management.admin_inputs_api.models.Trip;
+import com.traincompany.management.admin_inputs_api.models.Weekday;
 
 @Component
 public class Mapper {
@@ -41,6 +45,8 @@ public class Mapper {
                     schedule.arrivalWeekdayId(),
                     DateAndTimeFormatter.toTime(schedule.arrivalTime(), "HH:mm:ss"),
                     schedule.routeId(),
+                    null,
+                    null,
                     null);
     }
     
@@ -188,5 +194,27 @@ public class Mapper {
 
     public City map(CityDTO city) {
         return new City(city.id(), city.city(), city.province(), city.country());
+    }
+
+    /*
+    * Timezone Mappers
+    */
+    public TimezoneDTO map(Timezone timezone) {
+        return new TimezoneDTO(timezone.getId(), timezone.getName(), timezone.getRegion());
+    }
+
+    public Timezone map(TimezoneDTO timezone) {
+        return new Timezone(timezone.id(), timezone.name(), timezone.region());
+    }
+
+    /*
+    * Weekday Mappers
+    */
+    public WeekdayDTO map(Weekday weekday) {
+        return new WeekdayDTO(weekday.getId(), weekday.getName());
+    }
+
+    public Weekday map(WeekdayDTO weekday) {
+        return new Weekday(weekday.id(), weekday.name());
     }
 }

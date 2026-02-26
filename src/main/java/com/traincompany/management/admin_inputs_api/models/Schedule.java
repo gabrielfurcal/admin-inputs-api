@@ -46,4 +46,12 @@ public class Schedule {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name="Route_ID")
     private Route route;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name="Departure_Weekday_ID")
+    private Weekday departureWeekday;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name="Arrival_Weekday_ID")
+    private Weekday arrivalWeekday;
 }

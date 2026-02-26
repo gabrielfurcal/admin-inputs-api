@@ -33,18 +33,6 @@ public class ScheduleService {
         }
     }
 
-    public List<ScheduleDTO> findAll(Integer statusId) throws Exception {
-        try {
-            var dbSchedules = scheduleRepository.findAllByStatusId(statusId);
-            var scheduleList = dbSchedules.stream().map(schedule -> mapper.map(schedule)).toList();
-
-            return scheduleList;
-        } catch (Exception ex) {
-            log.error("Error at getting schedules: {}", ex.getMessage());
-            throw new Exception("Error at getting schedules");
-        }
-    }
-
     public List<ScheduleDTO> findFiltered(Integer departureStationId, Integer arrivalStationId, String departureTime, String arrivalTime, Integer passengers) throws Exception {
         try {
             var dbSchedules = scheduleRepository.findFiltered(departureStationId, arrivalStationId, DateAndTimeFormatter.toTime(departureTime, "HH:mm:ss"), DateAndTimeFormatter.toTime(arrivalTime, "HH:mm:ss"));
