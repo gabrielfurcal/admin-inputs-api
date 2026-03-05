@@ -3,9 +3,11 @@ package com.traincompany.management.admin_inputs_api.controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.traincompany.management.admin_inputs_api.DTOs.ScheduleDTO;
 import com.traincompany.management.admin_inputs_api.DTOs.StatusDTO;
 import com.traincompany.management.admin_inputs_api.DTOs.TrainDTO;
 import com.traincompany.management.admin_inputs_api.DTOs.TripDTO;
+import com.traincompany.management.admin_inputs_api.services.ScheduleService;
 import com.traincompany.management.admin_inputs_api.services.StatusService;
 import com.traincompany.management.admin_inputs_api.services.TrainService;
 import com.traincompany.management.admin_inputs_api.services.TripService;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequiredArgsConstructor
 public class TripController {
     private final TripService tripService;
+    private final ScheduleService scheduleService;
     private final StatusService statusService;
     private final TrainService trainService;
 
@@ -63,6 +66,11 @@ public class TripController {
     @SchemaMapping(typeName = "Trip")
     public StatusDTO status(TripDTO trip) throws Exception {
         return statusService.findById(trip.statusId());
+    }
+
+    @SchemaMapping(typeName = "Trip")
+    public ScheduleDTO schedule(TripDTO trip) throws Exception {
+        return scheduleService.findById(trip.scheduleId());
     }
 
     @SchemaMapping(typeName = "Trip")

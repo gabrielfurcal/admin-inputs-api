@@ -194,6 +194,7 @@ input StationInput {
     latitude: Float
     longitude: Float
     cityId: Int
+    timezoneId: Int
     imageUrl: String
 }
 

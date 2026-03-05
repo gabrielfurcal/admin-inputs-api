@@ -57,8 +57,8 @@ public class Mapper {
         return new TripDTO(
                     trip.getId(),
                     trip.getScheduleId(),
-                    trip.getStatusId(),
                     trip.getTrainId(),
+                    trip.getStatusId(),
                     DateAndTimeFormatter.toString(trip.getStartTime(), "yyyy-MM-dd HH:mm:ss"),
                     DateAndTimeFormatter.toString(trip.getEndTime(), "yyyy-MM-dd HH:mm:ss"),
                     null);
