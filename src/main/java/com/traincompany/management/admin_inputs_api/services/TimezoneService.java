@@ -1,8 +1,11 @@
 package com.traincompany.management.admin_inputs_api.services;
 
 import java.util.List;
+
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.traincompany.management.admin_inputs_api.DTOs.PageDTO;
 import com.traincompany.management.admin_inputs_api.DTOs.TimezoneDTO;
 import com.traincompany.management.admin_inputs_api.repositories.TimezoneRepository;
 import com.traincompany.management.admin_inputs_api.utils.Mapper;
@@ -23,6 +26,19 @@ public class TimezoneService {
             var timezonesList = dbTimezones.stream().map(timezone -> mapper.map(timezone)).toList();
 
             return timezonesList;
+        } catch (Exception ex) {
+            log.error("Error at getting timezones: {}", ex.getMessage());
+            throw new Exception("Error at getting timezones");
+        }
+    }
+
+    public PageDTO<TimezoneDTO> findAll(Integer offset, Integer limit) throws Exception {
+        try {
+            var pageable = PageRequest.of(offset, limit);
+            var timezonesPage = timezoneRepository.findAll(pageable);
+            var timezonesList = timezonesPage.getContent().stream().map(timezone -> mapper.map(timezone)).toList();
+
+            return new PageDTO<TimezoneDTO>(timezonesList, timezoneRepository.count(), timezonesPage.hasNext());
         } catch (Exception ex) {
             log.error("Error at getting timezones: {}", ex.getMessage());
             throw new Exception("Error at getting timezones");

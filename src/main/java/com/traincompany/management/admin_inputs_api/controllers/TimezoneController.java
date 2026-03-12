@@ -3,6 +3,7 @@ package com.traincompany.management.admin_inputs_api.controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.traincompany.management.admin_inputs_api.DTOs.PageDTO;
 import com.traincompany.management.admin_inputs_api.DTOs.TimezoneDTO;
 import com.traincompany.management.admin_inputs_api.services.TimezoneService;
 
@@ -35,8 +36,8 @@ public class TimezoneController {
     * 
     */
     @QueryMapping
-    public List<TimezoneDTO> timezones() throws Exception {
-        return timezoneService.findAll();
+    public PageDTO<TimezoneDTO> timezones(@Argument Integer offset, @Argument Integer limit) throws Exception {
+        return timezoneService.findAll(offset, limit);
     }
 
     @QueryMapping

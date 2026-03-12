@@ -13,7 +13,7 @@ type Query {
     cityById(id: Int): City
     weekdays: [Weekday!]!
     weekdayById(id: Int): Weekday
-    timezones: [Timezone!]!
+    timezones(offset: Int = 0, limit: Int = 10): TimezonePage!
     timezoneById(id: Int): Timezone
     employees: [Employee!]!
     employeeById(id: Int): Employee
@@ -53,6 +53,12 @@ type Timezone {
     id: ID!
     name: String!
     region: String!
+}
+
+type TimezonePage {
+    items: [Timezone!]!
+    totalCount: Int!
+    hasNextPage: Boolean!
 }
 
 type Employee {
