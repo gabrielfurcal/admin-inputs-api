@@ -1,8 +1,11 @@
 package com.traincompany.management.admin_inputs_api.services;
 
 import java.util.List;
+
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.traincompany.management.admin_inputs_api.DTOs.PageDTO;
 import com.traincompany.management.admin_inputs_api.DTOs.TripDTO;
 import com.traincompany.management.admin_inputs_api.models.Trip;
 import com.traincompany.management.admin_inputs_api.repositories.StatusRepository;
@@ -29,6 +32,19 @@ public class TripService {
             var tripList = dbTrip.stream().map(trip -> mapper.map(trip)).toList();
             
             return tripList;
+        } catch (Exception ex) {
+            log.error("Error at getting trips: {}", ex.getMessage());
+            throw new Exception("Error at getting trips");
+        }
+    }
+
+    public PageDTO<TripDTO> findAll(Integer offset, Integer limit) throws Exception {
+        try {
+            var pageable = PageRequest.of(offset, limit);
+            var tripsPage = tripRepository.findAll(pageable);
+            var tripList = tripsPage.getContent().stream().map(trip -> mapper.map(trip)).toList();
+
+            return new PageDTO<TripDTO>(tripList, tripRepository.count(), tripsPage.hasNext());
         } catch (Exception ex) {
             log.error("Error at getting trips: {}", ex.getMessage());
             throw new Exception("Error at getting trips");

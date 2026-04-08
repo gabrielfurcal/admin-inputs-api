@@ -1,25 +1,35 @@
 type Query {
     schedules: [Schedule!]!
+    schedulesPage(offset: Int = 0, limit: Int = 10): SchedulePage!
     schedulesFiltered(startStationId: Int, endStationId: Int, startDate: String, endDate: String, passengers: Int): [Schedule!]
     scheduleById(id: Int): Schedule
     trips: [Trip!]!
+    tripsPage(offset: Int = 0, limit: Int = 10): TripPage!
     tripsFiltered(startStationId: Int, endStationId: Int, startDate: String, endDate: String, passengers: Int): [Trip!]
     tripById(id: Int): Trip
     status: [Status!]!
+    statusPage(offset: Int = 0, limit: Int = 10): StatusPage!
     statusById(id: Int): Status
     trains: [Train!]!
+    trainsPage(offset: Int = 0, limit: Int = 10): TrainPage!
     trainById(id: Int): Train
     cities: [City!]!
+    citiesPage(offset: Int = 0, limit: Int = 10): CityPage!
     cityById(id: Int): City
     weekdays: [Weekday!]!
+    weekdaysPage(offset: Int = 0, limit: Int = 10): WeekdayPage!
     weekdayById(id: Int): Weekday
-    timezones(offset: Int = 0, limit: Int = 10): TimezonePage!
+    timezones: [Timezone!]!
+    timezonesPage(offset: Int = 0, limit: Int = 10): TimezonePage!
     timezoneById(id: Int): Timezone
     employees: [Employee!]!
+    employeesPage(offset: Int = 0, limit: Int = 10): EmployeePage!
     employeeById(id: Int): Employee
     stations: [Station!]!
+    stationsPage(offset: Int = 0, limit: Int = 10): StationPage!
     stationById(id: Int): Station
     routes: [Route!]!
+    routesPage(offset: Int = 0, limit: Int = 10): RoutePage!
     routeById(id: Int): Route
 }
 
@@ -30,11 +40,23 @@ type Status {
     schedules: [Schedule!]
 }
 
+type StatusPage {
+    items: [Status!]!
+    totalCount: Int!
+    hasNextPage: Boolean!
+}
+
 type Train {
     id: ID!
     type: String!
     capacity: Int
     maxSpeed: Float
+}
+
+type TrainPage {
+    items: [Train!]!
+    totalCount: Int!
+    hasNextPage: Boolean!
 }
 
 type City {
@@ -44,9 +66,21 @@ type City {
     country: String!
 }
 
+type CityPage {
+    items: [City!]!
+    totalCount: Int!
+    hasNextPage: Boolean!
+}
+
 type Weekday {
     id: ID!
     name: String!
+}
+
+type WeekdayPage {
+    items: [Weekday!]!
+    totalCount: Int!
+    hasNextPage: Boolean!
 }
 
 type Timezone {
@@ -70,6 +104,12 @@ type Employee {
     email: String!
 }
 
+type EmployeePage {
+    items: [Employee!]!
+    totalCount: Int!
+    hasNextPage: Boolean!
+}
+
 type Station {
     id: ID!
     name: String!
@@ -83,11 +123,23 @@ type Station {
     imageUrl: String
 }
 
+type StationPage {
+    items: [Station!]!
+    totalCount: Int!
+    hasNextPage: Boolean!
+}
+
 type Route {
     id: ID
     startStation: Station
     endStation: Station
     distance: Float
+}
+
+type RoutePage {
+    items: [Route!]!
+    totalCount: Int!
+    hasNextPage: Boolean!
 }
 
 type Schedule {
@@ -99,6 +151,12 @@ type Schedule {
     arrivalWeekday: Weekday
 }
 
+type SchedulePage {
+    items: [Schedule!]!
+    totalCount: Int!
+    hasNextPage: Boolean!
+}
+
 type Trip {
     id: ID!
     schedule: Schedule
@@ -106,6 +164,12 @@ type Trip {
     startTime: String
     endTime: String
     status: Status
+}
+
+type TripPage {
+    items: [Trip!]!
+    totalCount: Int!
+    hasNextPage: Boolean!
 }
 
 ###################################### MUTATIONS ######################################

@@ -3,6 +3,7 @@ package com.traincompany.management.admin_inputs_api.controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.traincompany.management.admin_inputs_api.DTOs.PageDTO;
 import com.traincompany.management.admin_inputs_api.DTOs.WeekdayDTO;
 import com.traincompany.management.admin_inputs_api.services.WeekdayService;
 
@@ -37,6 +38,11 @@ public class WeekdayController {
     @QueryMapping
     public List<WeekdayDTO> weekdays() throws Exception {
         return weekdayService.findAll();
+    }
+
+    @QueryMapping
+    public PageDTO<WeekdayDTO> weekdaysPage(@Argument Integer offset, @Argument Integer limit) throws Exception {
+        return weekdayService.findAll(offset, limit);
     }
 
     @QueryMapping

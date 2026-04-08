@@ -1,8 +1,11 @@
 package com.traincompany.management.admin_inputs_api.services;
 
 import java.util.List;
+
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.traincompany.management.admin_inputs_api.DTOs.PageDTO;
 import com.traincompany.management.admin_inputs_api.DTOs.ScheduleDTO;
 import com.traincompany.management.admin_inputs_api.models.Schedule;
 import com.traincompany.management.admin_inputs_api.repositories.RouteRepository;
@@ -27,6 +30,19 @@ public class ScheduleService {
             var scheduleList = dbSchedules.stream().map(schedule -> mapper.map(schedule)).toList();
             
             return scheduleList;
+        } catch (Exception ex) {
+            log.error("Error at getting schedules: {}", ex.getMessage());
+            throw new Exception("Error at getting schedules");
+        }
+    }
+
+    public PageDTO<ScheduleDTO> findAll(Integer offset, Integer limit) throws Exception {
+        try {
+            var pageable = PageRequest.of(offset, limit);
+            var schedulesPage = scheduleRepository.findAll(pageable);
+            var scheduleList = schedulesPage.getContent().stream().map(schedule -> mapper.map(schedule)).toList();
+
+            return new PageDTO<ScheduleDTO>(scheduleList, scheduleRepository.count(), schedulesPage.hasNext());
         } catch (Exception ex) {
             log.error("Error at getting schedules: {}", ex.getMessage());
             throw new Exception("Error at getting schedules");

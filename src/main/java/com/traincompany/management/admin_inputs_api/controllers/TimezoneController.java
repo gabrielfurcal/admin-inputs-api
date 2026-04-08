@@ -36,7 +36,12 @@ public class TimezoneController {
     * 
     */
     @QueryMapping
-    public PageDTO<TimezoneDTO> timezones(@Argument Integer offset, @Argument Integer limit) throws Exception {
+    public List<TimezoneDTO> timezones() throws Exception {
+        return timezoneService.findAll();
+    }
+
+    @QueryMapping
+    public PageDTO<TimezoneDTO> timezonesPage(@Argument Integer offset, @Argument Integer limit) throws Exception {
         return timezoneService.findAll(offset, limit);
     }
 

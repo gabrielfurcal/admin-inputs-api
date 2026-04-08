@@ -1,8 +1,11 @@
 package com.traincompany.management.admin_inputs_api.services;
 
 import java.util.List;
+
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.traincompany.management.admin_inputs_api.DTOs.PageDTO;
 import com.traincompany.management.admin_inputs_api.DTOs.WeekdayDTO;
 import com.traincompany.management.admin_inputs_api.repositories.WeekdayRepository;
 import com.traincompany.management.admin_inputs_api.utils.Mapper;
@@ -23,6 +26,19 @@ public class WeekdayService {
             var weekdaysList = dbWeekdays.stream().map(weekday -> mapper.map(weekday)).toList();
 
             return weekdaysList;
+        } catch (Exception ex) {
+            log.error("Error at getting weekdays: {}", ex.getMessage());
+            throw new Exception("Error at getting weekdays");
+        }
+    }
+
+    public PageDTO<WeekdayDTO> findAll(Integer offset, Integer limit) throws Exception {
+        try {
+            var pageable = PageRequest.of(offset, limit);
+            var weekdaysPage = weekdayRepository.findAll(pageable);
+            var weekdaysList = weekdaysPage.getContent().stream().map(weekday -> mapper.map(weekday)).toList();
+
+            return new PageDTO<WeekdayDTO>(weekdaysList, weekdayRepository.count(), weekdaysPage.hasNext());
         } catch (Exception ex) {
             log.error("Error at getting weekdays: {}", ex.getMessage());
             throw new Exception("Error at getting weekdays");

@@ -3,6 +3,7 @@ package com.traincompany.management.admin_inputs_api.controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.traincompany.management.admin_inputs_api.DTOs.PageDTO;
 import com.traincompany.management.admin_inputs_api.DTOs.StatusDTO;
 import com.traincompany.management.admin_inputs_api.services.StatusService;
 
@@ -37,6 +38,11 @@ public class StatusController {
     @QueryMapping
     public List<StatusDTO> status() throws Exception {
         return statusService.findAll();
+    }
+
+    @QueryMapping
+    public PageDTO<StatusDTO> statusPage(@Argument Integer offset, @Argument Integer limit) throws Exception {
+        return statusService.findAll(offset, limit);
     }
 
     @QueryMapping

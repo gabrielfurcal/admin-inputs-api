@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.traincompany.management.admin_inputs_api.DTOs.CityDTO;
+import com.traincompany.management.admin_inputs_api.DTOs.PageDTO;
 import com.traincompany.management.admin_inputs_api.DTOs.StationDTO;
 import com.traincompany.management.admin_inputs_api.DTOs.TimezoneDTO;
 import com.traincompany.management.admin_inputs_api.services.CityService;
@@ -45,6 +46,11 @@ public class StationController {
     @QueryMapping
     public List<StationDTO> stations() throws Exception {
         return stationService.findAll();
+    }
+
+    @QueryMapping
+    public PageDTO<StationDTO> stationsPage(@Argument Integer offset, @Argument Integer limit) throws Exception {
+        return stationService.findAll(offset, limit);
     }
 
     @QueryMapping

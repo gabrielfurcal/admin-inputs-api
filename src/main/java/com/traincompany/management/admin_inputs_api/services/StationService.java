@@ -1,8 +1,11 @@
 package com.traincompany.management.admin_inputs_api.services;
 
 import java.util.List;
+
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.traincompany.management.admin_inputs_api.DTOs.PageDTO;
 import com.traincompany.management.admin_inputs_api.DTOs.StationDTO;
 import com.traincompany.management.admin_inputs_api.models.Station;
 import com.traincompany.management.admin_inputs_api.repositories.StationRepository;
@@ -24,6 +27,19 @@ public class StationService {
             var stationsList = dbStations.stream().map(station -> mapper.map(station)).toList();
 
             return stationsList;
+        } catch (Exception ex) {
+            log.error("Error at getting stations: {}", ex.getMessage());
+            throw new Exception("Error at getting stations");
+        }
+    }
+
+    public PageDTO<StationDTO> findAll(Integer offset, Integer limit) throws Exception {
+        try {
+            var pageable = PageRequest.of(offset, limit);
+            var stationsPage = stationRepository.findAll(pageable);
+            var stationsList = stationsPage.getContent().stream().map(station -> mapper.map(station)).toList();
+
+            return new PageDTO<StationDTO>(stationsList, stationRepository.count(), stationsPage.hasNext());
         } catch (Exception ex) {
             log.error("Error at getting stations: {}", ex.getMessage());
             throw new Exception("Error at getting stations");
