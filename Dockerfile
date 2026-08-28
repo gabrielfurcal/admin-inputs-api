@@ -1,4 +1,4 @@
-# Runtime with Temurin 21
+# Runtime with Temurin 25
 FROM eclipse-temurin:21-jdk-alpine
 
 USER root
