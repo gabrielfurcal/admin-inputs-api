@@ -1,5 +1,5 @@
-# Runtime with Temurin 21
-FROM eclipse-temurin:21-jdk-alpine
+# Runtime with Temurin 25
+FROM eclipse-temurin:25-jdk-alpine
 
 USER root
 
@@ -9,7 +9,7 @@ ENV APP_NAME=${APP_NAME}
 WORKDIR /app
 
 # Copy jar from build stage
-COPY /target/*.jar ${APP_NAME}.jar
+COPY target/*.jar ${APP_NAME}.jar
 
 # Expose default Spring Boot port
 EXPOSE 8080

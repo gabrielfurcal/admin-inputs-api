@@ -3,9 +3,8 @@ package com.traincompany.management.admin_inputs_api.controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.traincompany.management.admin_inputs_api.DTOs.ScheduleDTO;
+import com.traincompany.management.admin_inputs_api.DTOs.PageDTO;
 import com.traincompany.management.admin_inputs_api.DTOs.StatusDTO;
-import com.traincompany.management.admin_inputs_api.services.ScheduleService;
 import com.traincompany.management.admin_inputs_api.services.StatusService;
 
 import lombok.RequiredArgsConstructor;
@@ -13,7 +12,6 @@ import java.util.List;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
-import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -22,7 +20,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequiredArgsConstructor
 public class StatusController {
     private final StatusService statusService;
-    private final ScheduleService scheduleService;
 
     @GetMapping()
     public ResponseEntity<List<StatusDTO>> getStatus() {
@@ -44,14 +41,19 @@ public class StatusController {
     }
 
     @QueryMapping
+    public PageDTO<StatusDTO> statusPage(@Argument Integer offset, @Argument Integer limit) throws Exception {
+        return statusService.findAll(offset, limit);
+    }
+
+    @QueryMapping
     public StatusDTO statusById(@Argument Integer id) throws Exception {
         return statusService.findById(id);
     }
 
-    @SchemaMapping(field = "schedules", typeName = "Status")
-    public List<ScheduleDTO> schedules(StatusDTO status) throws Exception {
-        return scheduleService.findAll(status.id());
-    }
+    // @SchemaMapping(field = "schedules", typeName = "Status")
+    // public List<ScheduleDTO> schedules(StatusDTO status) throws Exception {
+    //     return scheduleService.findAll(status.id());
+    // }
 
     @MutationMapping
     public StatusDTO saveStatus(@Argument StatusDTO status) throws Exception {

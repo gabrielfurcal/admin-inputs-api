@@ -1,18 +1,35 @@
 type Query {
     schedules: [Schedule!]!
+    schedulesPage(offset: Int = 0, limit: Int = 10): SchedulePage!
     schedulesFiltered(startStationId: Int, endStationId: Int, startDate: String, endDate: String, passengers: Int): [Schedule!]
     scheduleById(id: Int): Schedule
+    trips: [Trip!]!
+    tripsPage(offset: Int = 0, limit: Int = 10): TripPage!
+    tripsFiltered(startStationId: Int, endStationId: Int, startDate: String, endDate: String, passengers: Int): [Trip!]
+    tripById(id: Int): Trip
     status: [Status!]!
+    statusPage(offset: Int = 0, limit: Int = 10): StatusPage!
     statusById(id: Int): Status
     trains: [Train!]!
+    trainsPage(offset: Int = 0, limit: Int = 10): TrainPage!
     trainById(id: Int): Train
     cities: [City!]!
+    citiesPage(offset: Int = 0, limit: Int = 10): CityPage!
     cityById(id: Int): City
+    weekdays: [Weekday!]!
+    weekdaysPage(offset: Int = 0, limit: Int = 10): WeekdayPage!
+    weekdayById(id: Int): Weekday
+    timezones: [Timezone!]!
+    timezonesPage(offset: Int = 0, limit: Int = 10): TimezonePage!
+    timezoneById(id: Int): Timezone
     employees: [Employee!]!
+    employeesPage(offset: Int = 0, limit: Int = 10): EmployeePage!
     employeeById(id: Int): Employee
     stations: [Station!]!
+    stationsPage(offset: Int = 0, limit: Int = 10): StationPage!
     stationById(id: Int): Station
     routes: [Route!]!
+    routesPage(offset: Int = 0, limit: Int = 10): RoutePage!
     routeById(id: Int): Route
 }
 
@@ -23,6 +40,12 @@ type Status {
     schedules: [Schedule!]
 }
 
+type StatusPage {
+    items: [Status!]!
+    totalCount: Int!
+    hasNextPage: Boolean!
+}
+
 type Train {
     id: ID!
     type: String!
@@ -30,11 +53,46 @@ type Train {
     maxSpeed: Float
 }
 
+type TrainPage {
+    items: [Train!]!
+    totalCount: Int!
+    hasNextPage: Boolean!
+}
+
 type City {
     id: ID!
     city: String!
     province: String!
     country: String!
+}
+
+type CityPage {
+    items: [City!]!
+    totalCount: Int!
+    hasNextPage: Boolean!
+}
+
+type Weekday {
+    id: ID!
+    name: String!
+}
+
+type WeekdayPage {
+    items: [Weekday!]!
+    totalCount: Int!
+    hasNextPage: Boolean!
+}
+
+type Timezone {
+    id: ID!
+    name: String!
+    region: String!
+}
+
+type TimezonePage {
+    items: [Timezone!]!
+    totalCount: Int!
+    hasNextPage: Boolean!
 }
 
 type Employee {
@@ -46,6 +104,12 @@ type Employee {
     email: String!
 }
 
+type EmployeePage {
+    items: [Employee!]!
+    totalCount: Int!
+    hasNextPage: Boolean!
+}
+
 type Station {
     id: ID!
     name: String!
@@ -54,8 +118,15 @@ type Station {
     postalCode: String
     latitude: Float
     longitude: Float
+    timezone: Timezone
     city: City
     imageUrl: String
+}
+
+type StationPage {
+    items: [Station!]!
+    totalCount: Int!
+    hasNextPage: Boolean!
 }
 
 type Route {
@@ -65,13 +136,40 @@ type Route {
     distance: Float
 }
 
+type RoutePage {
+    items: [Route!]!
+    totalCount: Int!
+    hasNextPage: Boolean!
+}
+
 type Schedule {
     id: ID!
-    train: Train
     route: Route
     departureTime: String
+    departureWeekday: Weekday
     arrivalTime: String
+    arrivalWeekday: Weekday
+}
+
+type SchedulePage {
+    items: [Schedule!]!
+    totalCount: Int!
+    hasNextPage: Boolean!
+}
+
+type Trip {
+    id: ID!
+    schedule: Schedule
+    train: Train
+    startTime: String
+    endTime: String
     status: Status
+}
+
+type TripPage {
+    items: [Trip!]!
+    totalCount: Int!
+    hasNextPage: Boolean!
 }
 
 ###################################### MUTATIONS ######################################
@@ -81,10 +179,16 @@ type Mutation {
     deleteStatus(id: Int!): Boolean
     saveSchedule(schedule: ScheduleInput): Schedule
     deleteSchedule(id: Int!): Boolean
+    saveTrip(trip: TripInput): Trip
+    deleteTrip(id: Int!): Boolean
     saveTrain(train: TrainInput): Train
     deleteTrain(id: Int!): Boolean
     saveCity(city: CityInput): City
     deleteCity(id: Int!): Boolean
+    saveWeekday(weekday: WeekdayInput): Weekday
+    deleteWeekday(id: Int!): Boolean
+    saveTimezone(timezone: TimezoneInput): Timezone
+    deleteTimezone(id: Int!): Boolean
     saveEmployee(employee: EmployeeInput): Employee
     deleteEmployee(id: Int!): Boolean
     saveStation(station: StationInput): Station
@@ -101,11 +205,20 @@ input StatusInput {
 
 input ScheduleInput {
     id: ID
-    trainId: Int
-    statusId: Int
     routeId: Int
     departureTime: String
+    departureWeekdayId: Int
     arrivalTime: String
+    arrivalWeekdayId: Int
+}
+
+input TripInput {
+    id: ID
+    scheduleId: Int
+    trainId: Int
+    statusId: Int
+    startTime: String
+    endTime: String
 }
 
 input TrainInput {
@@ -120,6 +233,17 @@ input CityInput {
     city: String
     province: String
     country: String
+}
+
+input WeekdayInput {
+    id: ID
+    name: String
+}
+
+input TimezoneInput {
+    id: ID
+    name: String
+    region: String
 }
 
 input EmployeeInput {
@@ -140,6 +264,7 @@ input StationInput {
     latitude: Float
     longitude: Float
     cityId: Int
+    timezoneId: Int
     imageUrl: String
 }
 

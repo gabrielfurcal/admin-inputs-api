@@ -3,6 +3,7 @@ package com.traincompany.management.admin_inputs_api.controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.traincompany.management.admin_inputs_api.DTOs.PageDTO;
 import com.traincompany.management.admin_inputs_api.DTOs.RouteDTO;
 import com.traincompany.management.admin_inputs_api.DTOs.StationDTO;
 import com.traincompany.management.admin_inputs_api.services.RouteService;
@@ -41,6 +42,11 @@ public class RouteController {
     @QueryMapping
     public List<RouteDTO> routes() throws Exception {
         return routeService.findAll();
+    }
+
+    @QueryMapping
+    public PageDTO<RouteDTO> routesPage(@Argument Integer offset, @Argument Integer limit) throws Exception {
+        return routeService.findAll(offset, limit);
     }
 
     @QueryMapping
