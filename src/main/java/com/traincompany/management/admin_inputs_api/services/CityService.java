@@ -1,9 +1,12 @@
 package com.traincompany.management.admin_inputs_api.services;
 
 import java.util.List;
+
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.traincompany.management.admin_inputs_api.DTOs.CityDTO;
+import com.traincompany.management.admin_inputs_api.DTOs.PageDTO;
 import com.traincompany.management.admin_inputs_api.models.City;
 import com.traincompany.management.admin_inputs_api.repositories.CityRepository;
 import com.traincompany.management.admin_inputs_api.utils.Mapper;
@@ -24,6 +27,19 @@ public class CityService {
             var citiesList = dbCities.stream().map(city -> mapper.map(city)).toList();
 
             return citiesList;
+        } catch (Exception ex) {
+            log.error("Error at getting cities: {}", ex.getMessage());
+            throw new Exception("Error at getting cities");
+        }
+    }
+
+    public PageDTO<CityDTO> findAll(Integer offset, Integer limit) throws Exception {
+        try {
+            var pageable = PageRequest.of(offset, limit);
+            var citiesPage = cityRepository.findAll(pageable);
+            var citiesList = citiesPage.getContent().stream().map(city -> mapper.map(city)).toList();
+
+            return new PageDTO<CityDTO>(citiesList, cityRepository.count(), citiesPage.hasNext());
         } catch (Exception ex) {
             log.error("Error at getting cities: {}", ex.getMessage());
             throw new Exception("Error at getting cities");

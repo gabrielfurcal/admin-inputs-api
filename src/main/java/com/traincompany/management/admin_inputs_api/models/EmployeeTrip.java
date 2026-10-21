@@ -16,28 +16,28 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name="Employee_Schedule")
+@Table(name="Employee_Trip")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class EmployeeSchedule {
+public class EmployeeTrip {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Emp_Schdl_ID")
+    @Column(name = "Emp_Trip_ID")
     private Integer id;
 
     @Column(name = "Employee_ID", insertable = false, updatable = false)
     private Integer employeeId;
 
-    @Column(name = "Schedule_ID", insertable = false, updatable = false)
-    private Integer scheduleId;
+    @Column(name = "Trip_ID", insertable = false, updatable = false)
+    private Integer tripId;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name="Employee_ID")
     private Employee employee;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name="Schedule_ID")
-    private Schedule schedule;
+    @JoinColumn(name="Trip_ID")
+    private Trip trip;
 }

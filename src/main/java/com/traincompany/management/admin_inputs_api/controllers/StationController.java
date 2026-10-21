@@ -4,9 +4,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.traincompany.management.admin_inputs_api.DTOs.CityDTO;
+import com.traincompany.management.admin_inputs_api.DTOs.PageDTO;
 import com.traincompany.management.admin_inputs_api.DTOs.StationDTO;
+import com.traincompany.management.admin_inputs_api.DTOs.TimezoneDTO;
 import com.traincompany.management.admin_inputs_api.services.CityService;
 import com.traincompany.management.admin_inputs_api.services.StationService;
+import com.traincompany.management.admin_inputs_api.services.TimezoneService;
 
 import lombok.RequiredArgsConstructor;
 import java.util.List;
@@ -24,6 +27,7 @@ public class StationController {
 
     private final CityService cityService;
     private final StationService stationService;
+    private final TimezoneService timezoneService;
 
     @GetMapping()
     public ResponseEntity<List<StationDTO>> getStations() {
@@ -45,6 +49,11 @@ public class StationController {
     }
 
     @QueryMapping
+    public PageDTO<StationDTO> stationsPage(@Argument Integer offset, @Argument Integer limit) throws Exception {
+        return stationService.findAll(offset, limit);
+    }
+
+    @QueryMapping
     public StationDTO stationById(@Argument Integer id) throws Exception {
         return stationService.findById(id);
     }
@@ -52,6 +61,11 @@ public class StationController {
     @SchemaMapping(typeName = "Station")
     public CityDTO city(StationDTO station) throws Exception {
         return cityService.findById(station.cityId());
+    }
+    
+    @SchemaMapping(typeName = "Station")
+    public TimezoneDTO timezone(StationDTO station) throws Exception {
+        return timezoneService.findById(station.timezoneId());
     }
 
     @MutationMapping

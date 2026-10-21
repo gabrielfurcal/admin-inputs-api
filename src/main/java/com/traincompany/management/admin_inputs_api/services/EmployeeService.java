@@ -1,8 +1,11 @@
 package com.traincompany.management.admin_inputs_api.services;
 
 import java.util.List;
+
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.traincompany.management.admin_inputs_api.DTOs.PageDTO;
 import com.traincompany.management.admin_inputs_api.DTOs.EmployeeDTO;
 import com.traincompany.management.admin_inputs_api.models.Employee;
 import com.traincompany.management.admin_inputs_api.repositories.EmployeeRepository;
@@ -24,6 +27,19 @@ public class EmployeeService {
             var employeesList = dbEmployees.stream().map(employee -> mapper.map(employee)).toList();
 
             return employeesList;
+        } catch (Exception ex) {
+            log.error("Error at getting employees: {}", ex.getMessage());
+            throw new Exception("Error at getting employees");
+        }
+    }
+
+    public PageDTO<EmployeeDTO> findAll(Integer offset, Integer limit) throws Exception {
+        try {
+            var pageable = PageRequest.of(offset, limit);
+            var employeesPage = employeeRepository.findAll(pageable);
+            var employeesList = employeesPage.getContent().stream().map(employee -> mapper.map(employee)).toList();
+
+            return new PageDTO<EmployeeDTO>(employeesList, employeeRepository.count(), employeesPage.hasNext());
         } catch (Exception ex) {
             log.error("Error at getting employees: {}", ex.getMessage());
             throw new Exception("Error at getting employees");

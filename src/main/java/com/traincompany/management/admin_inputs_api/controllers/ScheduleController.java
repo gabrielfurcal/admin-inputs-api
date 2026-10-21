@@ -3,14 +3,13 @@ package com.traincompany.management.admin_inputs_api.controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.traincompany.management.admin_inputs_api.DTOs.PageDTO;
 import com.traincompany.management.admin_inputs_api.DTOs.RouteDTO;
 import com.traincompany.management.admin_inputs_api.DTOs.ScheduleDTO;
-import com.traincompany.management.admin_inputs_api.DTOs.StatusDTO;
-import com.traincompany.management.admin_inputs_api.DTOs.TrainDTO;
+import com.traincompany.management.admin_inputs_api.DTOs.WeekdayDTO;
 import com.traincompany.management.admin_inputs_api.services.RouteService;
 import com.traincompany.management.admin_inputs_api.services.ScheduleService;
-import com.traincompany.management.admin_inputs_api.services.StatusService;
-import com.traincompany.management.admin_inputs_api.services.TrainService;
+import com.traincompany.management.admin_inputs_api.services.WeekdayService;
 
 import lombok.RequiredArgsConstructor;
 import java.util.List;
@@ -26,8 +25,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequiredArgsConstructor
 public class ScheduleController {
     private final ScheduleService scheduleService;
-    private final StatusService statusService;
-    private final TrainService trainService;
+    private final WeekdayService weekdayService;
     private final RouteService routeService;
 
     @GetMapping()
@@ -50,6 +48,11 @@ public class ScheduleController {
     }
 
     @QueryMapping
+    public PageDTO<ScheduleDTO> schedulesPage(@Argument Integer offset, @Argument Integer limit) throws Exception {
+        return scheduleService.findAll(offset, limit);
+    }
+
+    @QueryMapping
     public ScheduleDTO scheduleById(@Argument Integer id) throws Exception {
         return scheduleService.findById(id);
     }
@@ -64,18 +67,18 @@ public class ScheduleController {
     }
 
     @SchemaMapping(typeName = "Schedule")
-    public StatusDTO status(ScheduleDTO schedule) throws Exception {
-        return statusService.findById(schedule.statusId());
-    }
-
-    @SchemaMapping(typeName = "Schedule")
-    public TrainDTO train(ScheduleDTO schedule) throws Exception {
-        return trainService.findById(schedule.trainId());
-    }
-
-    @SchemaMapping(typeName = "Schedule")
     public RouteDTO route(ScheduleDTO schedule) throws Exception {
         return routeService.findById(schedule.routeId());
+    }
+
+    @SchemaMapping(typeName = "Schedule")
+    public WeekdayDTO departureWeekday(ScheduleDTO schedule) throws Exception {
+        return weekdayService.findById(schedule.departureWeekdayId());
+    }
+
+    @SchemaMapping(typeName = "Schedule")
+    public WeekdayDTO arrivalWeekday(ScheduleDTO schedule) throws Exception {
+        return weekdayService.findById(schedule.arrivalWeekdayId());
     }
 
     @MutationMapping

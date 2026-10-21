@@ -3,6 +3,7 @@ package com.traincompany.management.admin_inputs_api.controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.traincompany.management.admin_inputs_api.DTOs.PageDTO;
 import com.traincompany.management.admin_inputs_api.DTOs.CityDTO;
 import com.traincompany.management.admin_inputs_api.services.CityService;
 
@@ -37,6 +38,11 @@ public class CityController {
     @QueryMapping
     public List<CityDTO> cities() throws Exception {
         return cityService.findAll();
+    }
+
+    @QueryMapping
+    public PageDTO<CityDTO> citiesPage(@Argument Integer offset, @Argument Integer limit) throws Exception {
+        return cityService.findAll(offset, limit);
     }
 
     @QueryMapping

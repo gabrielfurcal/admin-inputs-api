@@ -1,8 +1,11 @@
 package com.traincompany.management.admin_inputs_api.services;
 
 import java.util.List;
+
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.traincompany.management.admin_inputs_api.DTOs.PageDTO;
 import com.traincompany.management.admin_inputs_api.DTOs.RouteDTO;
 import com.traincompany.management.admin_inputs_api.models.Route;
 import com.traincompany.management.admin_inputs_api.repositories.RouteRepository;
@@ -26,6 +29,19 @@ public class RouteService {
             var routesList = dbRoutes.stream().map(route -> mapper.map(route)).toList();
 
             return routesList;
+        } catch (Exception ex) {
+            log.error("Error at getting routes: {}", ex.getMessage());
+            throw new Exception("Error at getting routes");
+        }
+    }
+
+    public PageDTO<RouteDTO> findAll(Integer offset, Integer limit) throws Exception {
+        try {
+            var pageable = PageRequest.of(offset, limit);
+            var routesPage = routeRepository.findAll(pageable);
+            var routesList = routesPage.getContent().stream().map(route -> mapper.map(route)).toList();
+
+            return new PageDTO<RouteDTO>(routesList, routeRepository.count(), routesPage.hasNext());
         } catch (Exception ex) {
             log.error("Error at getting routes: {}", ex.getMessage());
             throw new Exception("Error at getting routes");

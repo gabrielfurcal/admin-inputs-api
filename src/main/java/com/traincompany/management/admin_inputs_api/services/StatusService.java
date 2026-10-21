@@ -1,8 +1,11 @@
 package com.traincompany.management.admin_inputs_api.services;
 
 import java.util.List;
+
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.traincompany.management.admin_inputs_api.DTOs.PageDTO;
 import com.traincompany.management.admin_inputs_api.DTOs.StatusDTO;
 import com.traincompany.management.admin_inputs_api.models.Status;
 import com.traincompany.management.admin_inputs_api.repositories.StatusRepository;
@@ -24,6 +27,19 @@ public class StatusService {
             var statusList = dbStatus.stream().map(status -> mapper.map(status)).toList();
 
             return statusList;
+        } catch (Exception ex) {
+            log.error("Error at getting status: {}", ex.getMessage());
+            throw new Exception("Error at getting status");
+        }
+    }
+
+    public PageDTO<StatusDTO> findAll(Integer offset, Integer limit) throws Exception {
+        try {
+            var pageable = PageRequest.of(offset, limit);
+            var statusPage = statusRepository.findAll(pageable);
+            var statusList = statusPage.getContent().stream().map(status -> mapper.map(status)).toList();
+
+            return new PageDTO<StatusDTO>(statusList, statusRepository.count(), statusPage.hasNext());
         } catch (Exception ex) {
             log.error("Error at getting status: {}", ex.getMessage());
             throw new Exception("Error at getting status");

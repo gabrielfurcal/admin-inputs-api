@@ -4,8 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 // import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.graphql.GraphQlTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.graphql.test.autoconfigure.GraphQlTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 // import org.springframework.graphql.test.tester.GraphQlTester;
 // import com.traincompany.management.admin_inputs_api.DTOs.CityDTO;
 import com.traincompany.management.admin_inputs_api.services.CityService;
@@ -16,7 +16,7 @@ public class CityControllerTest {
    //  @Autowired
    //  private GraphQlTester graphQlTester;
 
-    @MockBean
+   @MockitoBean
     private CityService cityService;
 
     @Test
