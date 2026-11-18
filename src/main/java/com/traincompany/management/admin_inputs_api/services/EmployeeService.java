@@ -58,6 +58,18 @@ public class EmployeeService {
         }
     }
 
+    public EmployeeDTO findByUserId(String userId) throws Exception {
+        try {
+            Employee dbEmployee = employeeRepository.findByUserId(userId).orElseThrow(() -> new Exception("Employee not found"));
+            var employee = mapper.map(dbEmployee);
+            
+            return employee;
+        } catch (Exception ex) {
+            log.error("Error at getting employee with UserID: {}", ex.getMessage());
+            throw new Exception(ex.getMessage());
+        }
+    }
+
     public EmployeeDTO save(EmployeeDTO employee) throws Exception {
         try {
             if(employee.id() == null) {

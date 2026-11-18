@@ -37,4 +37,7 @@ public class Employee {
 
     @Column(name = "Email", length = 60)
     private String email;
+
+    @Column(name = "User_ID", length = 36)
+    private String userId;
 }

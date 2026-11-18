@@ -50,6 +50,11 @@ public class EmployeeController {
         return employeeService.findById(id);
     }
 
+    @QueryMapping
+    public EmployeeDTO employeeByUserId(@Argument String userId) throws Exception {
+        return employeeService.findByUserId(userId);
+    }
+
     @MutationMapping
     public EmployeeDTO saveEmployee(@Argument EmployeeDTO employee) throws Exception {
         return employeeService.save(employee);

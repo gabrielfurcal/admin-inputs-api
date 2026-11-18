@@ -25,6 +25,7 @@ type Query {
     employees: [Employee!]!
     employeesPage(offset: Int = 0, limit: Int = 10): EmployeePage!
     employeeById(id: Int): Employee
+    employeeByUserId(userId: String): Employee
     stations: [Station!]!
     stationsPage(offset: Int = 0, limit: Int = 10): StationPage!
     stationById(id: Int): Station
@@ -102,6 +103,7 @@ type Employee {
     position: String!
     phoneNumber: String!
     email: String!
+    userId: String!
 }
 
 type EmployeePage {

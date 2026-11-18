@@ -88,6 +88,7 @@ public class Mapper {
             employee.getPosition(),
             employee.getPhoneNumber(),
             employee.getEmail(),
+            employee.getUserId(),
             null
         );
     }
@@ -99,7 +100,8 @@ public class Mapper {
             employee.lastName(),
             employee.position(),
             employee.phoneNumber(),
-            employee.email()
+            employee.email(),
+            employee.userId()
         );
     }
 
